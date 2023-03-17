@@ -25,14 +25,62 @@ app.get('/todos', async (req, res) => {
     res.send(todos);
 });
 
-//
-// YOUR CODE HERE
-//
-// Implement the following routes:
+
 // GET /todos/:id
+app.get('/todos/:id', async (req, res) => {
+    const todo = await db.queryById(req.params.id);
+    if (todo) {
+        res.send(todo);
+    } else {
+        res.status(404).send({ error: 'Todo not found' });
+    }
+});
+
+
 // POST /todos
+app.post('/todos', async (req, res) => {
+    const result = await db.insert(req.body);
+    res.send(result.ops[0]);
+});
+
+
 // PUT /todos/:id
+app.put('/todos/:id', async (req, res) => {
+    const todo = await db.queryById(req.params.id);
+    if (!todo) {
+        res.status(404).send({ error: 'Todo not found' });
+        return;
+    }
+
+    const updateResult = await db.update(req.params.id, req.body);
+    if (updateResult.modifiedCount !== 1) {
+        res.status(500).send({ error: 'Failed to update todo' });
+        return;
+    }
+
+    const updatedTodo = await db.queryById(req.params.id);
+    res.send(updatedTodo);
+});
+
+
 // DELETE /todos/:id
+app.delete('/todos/:id', async (req, res) => {
+    const todo = await db.queryById(req.params.id);
+    if (!todo) {
+        res.status(404).send({ error: 'Todo not found' });
+        return;
+    }
+
+    const deleteResult = await db.delete(req.params.id);
+    if (deleteResult.deletedCount !== 1) {
+        res.status(500).send({ error: 'Failed to delete todo' });
+        return;
+    }
+
+    res.send({ success: true });
+});
+
+
 
 
 initDB()
