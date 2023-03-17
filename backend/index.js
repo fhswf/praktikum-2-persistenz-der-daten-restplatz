@@ -25,6 +25,15 @@ app.get('/todos', async (req, res) => {
     res.send(todos);
 });
 
+/** Return todo by given id. 
+ */
+app.get('/todos/:id', async (req, res) => {
+    let todos = await db.queryById(req.params.id);
+    console.log(todos)
+    res.send(todos);
+});
+
+
 app.get('/', async (req, res) => {
     res.send("nix los");
 });
