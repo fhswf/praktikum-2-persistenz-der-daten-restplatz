@@ -33,6 +33,10 @@ app.get('/todos/:id', async (req, res) => {
     res.send(todos);
 });
 
+app.put('todo/:id' , async(req,res) =>{
+    let ret = await db.update(req.params.id, req.body);
+    res.send(ret);
+});
 
 app.get('/', async (req, res) => {
     res.send("nix los");
