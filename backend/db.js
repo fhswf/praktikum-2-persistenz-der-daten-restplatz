@@ -21,12 +21,15 @@ export default class DB {
     }
 
     queryById(id) {
-        
         return collection.findOne({_id:new ObjectId(id)});
     }
 
     update(id, order) {
-        // TODO: Implement update
+        const rslt= collection.updateOne(
+            { _id: new ObjectId(id) },
+            { $set: order }
+        );
+        return rslt;
     }
 
     delete(id) {
