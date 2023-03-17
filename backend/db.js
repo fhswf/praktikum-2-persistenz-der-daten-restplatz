@@ -37,6 +37,7 @@ export default class DB {
     }
 
     insert(order) {
-        // TODO: Implement insert
+        const rslt = collection.insertOne(order);
+        return rslt;
     }
 }
