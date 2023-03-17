@@ -33,7 +33,7 @@ export default class DB {
     }
 
     delete(id) {
-        // TODO: Implement delete
+        collection.deleteOne({_id: new ObjectId(id)});
     }
 
     insert(order) {
