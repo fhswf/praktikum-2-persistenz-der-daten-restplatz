@@ -25,6 +25,10 @@ app.get('/todos', async (req, res) => {
     res.send(todos);
 });
 
+app.get('/', async (req, res) => {
+    res.send("nix los");
+});
+
 //
 // YOUR CODE HERE
 //
