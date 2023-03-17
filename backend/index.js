@@ -38,18 +38,16 @@ app.put('todo/:id' , async(req,res) =>{
     res.send(ret);
 });
 
+app.post('todo', async(req,res) =>{
+    let ret = await db.insert(req.body);
+    res.send(ret);
+});
+
+
 app.get('/', async (req, res) => {
     res.send("nix los");
 });
 
-//
-// YOUR CODE HERE
-//
-// Implement the following routes:
-// GET /todos/:id
-// POST /todos
-// PUT /todos/:id
-// DELETE /todos/:id
 
 
 initDB()
