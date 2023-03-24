@@ -37,7 +37,15 @@ export default class DB {
     }
 
     insert(order) {
-        const rslt = collection.insertOne(order);
+        const { title, due, status } = order;
+        const rslt = collection.insertOne(
+            {_id: new ObjectId(),
+            "due": due,
+            "title":title,
+            "status":status
+        }
+
+        );
         return rslt;
     }
 }
