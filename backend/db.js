@@ -1,10 +1,14 @@
 import { MongoClient } from 'mongodb';
+import { ObjectId } from 'mongodb';
 
 const MONGO_URI = process.env.MONGO_URI || 'mongodb://localhost:27017/todos';
 const MONGO_DB = process.env.MONGO_DB || 'todos';
 
 let db = null;
 let collection = null;
+
+
+
 export default class DB {
     connect() {
         return MongoClient.connect(MONGO_URI)
@@ -19,7 +23,7 @@ export default class DB {
     }
 
     queryById(id) {
-        return collection.findOne({ _id: id });
+        return collection.findOne({ _id: new ObjectId(id) });
     }
 
     update(id, order) {
