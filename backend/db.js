@@ -27,8 +27,13 @@ export default class DB {
     }
 
     update(id, order) {
-        return collection.updateOne({ _id: id }, { $set: order });
+        const rslt= collection.updateOne(
+            { _id: new ObjectId(id) },
+            { $set: order }
+        );
+        return rslt;
     }
+
 
     delete(id) {
         return collection.deleteOne({ _id: id });

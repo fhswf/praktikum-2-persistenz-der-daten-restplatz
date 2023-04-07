@@ -49,20 +49,8 @@ app.post('/todos', async (req, res) => {
 
 // Update PUT /todos/:id
 app.put('/todos/:id', async (req, res) => {
-    const todo = await db.queryById(req.params.id);
-    if (!todo) {
-        res.status(404).send({ error: 'Todo not found' });
-        return;
-    }
-
-    const updateResult = await db.update(req.params.id, req.body);
-    if (updateResult.modifiedCount !== 1) {
-        res.status(500).send({ error: 'Failed to update todo' });
-        return;
-    }
-
-    const updatedTodo = await db.queryById(req.params.id);
-    res.send(updatedTodo);
+    const ret = await db.update(req.params.id, req.body);
+    res.send(ret);
 });
 
 
