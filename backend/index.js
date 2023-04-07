@@ -42,7 +42,7 @@ app.get('/todos/:id', async (req, res) => {
 // Create  POST /todos
 app.post('/todos', async (req, res) => {
     const result = await db.insert(req.body);
-    console.log(result)
+    console.log(result);
     res.send(result);
 });
 
