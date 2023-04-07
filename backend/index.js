@@ -43,7 +43,7 @@ app.get('/todos/:id', async (req, res) => {
 app.post('/todos', async (req, res) => {
     const result = await db.insert(req.body);
     console.log(result)
-    res.send(result.ops[0]);
+    res.send(result);
 });
 
 
