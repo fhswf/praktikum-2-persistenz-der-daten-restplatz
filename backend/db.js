@@ -36,7 +36,7 @@ export default class DB {
 
 
     delete(id) {
-        return collection.deleteOne({ _id: id });
+        return collection.deleteOne({ _id: new ObjectId(id) });
     }
 
     insert(order) {

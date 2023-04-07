@@ -56,20 +56,11 @@ app.put('/todos/:id', async (req, res) => {
 
 // DELETE /todos/:id
 app.delete('/todos/:id', async (req, res) => {
-    const todo = await db.queryById(req.params.id);
-    if (!todo) {
-        res.status(404).send({ error: 'Todo not found' });
-        return;
-    }
-
-    const deleteResult = await db.delete(req.params.id);
-    if (deleteResult.deletedCount !== 1) {
-        res.status(500).send({ error: 'Failed to delete todo' });
-        return;
-    }
-
-    res.send({ success: true });
+    let ret = await db.delete(req.params.id);
+    res.send(ret);
 });
+
+
 
 
 
