@@ -1,10 +1,11 @@
 import express from 'express';
 import DB from './db.js'
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 8000;
 
 /** Zentrales Objekt für unsere Express-Applikation */
 const app = express();
+app.use(express.json());
 
 /** global instance of our database */
 let db = new DB();
@@ -29,22 +30,24 @@ app.get('/todos', async (req, res) => {
 // GET /todos/:id
 app.get('/todos/:id', async (req, res) => {
     const todo = await db.queryById(req.params.id);
-    if (todo) {
-        res.send(todo);
-    } else {
+    if (Object.keys(todo).length === 0) {
         res.status(404).send({ error: 'Todo not found' });
+    } else {
+        res.send(todo);
     }
 });
 
 
-// POST /todos
+
+// Create  POST /todos
 app.post('/todos', async (req, res) => {
     const result = await db.insert(req.body);
+    console.log(result)
     res.send(result.ops[0]);
 });
 
 
-// PUT /todos/:id
+// Update PUT /todos/:id
 app.put('/todos/:id', async (req, res) => {
     const todo = await db.queryById(req.params.id);
     if (!todo) {
