@@ -1,6 +1,34 @@
 import express from 'express';
 import DB from './db.js'
 
+  // Swagger Anfang
+
+import swaggerUi from 'swagger-ui-express';
+import swaggerJsdoc from 'swagger-jsdoc';
+
+const swaggerOptions = {
+    swaggerDefinition: {
+      openapi: '3.0.0',
+      info: {
+        title: 'Todo API',
+        version: '1.0.0',
+        description: 'Todo API Dokumentation',
+      },
+      servers: [
+        {
+          url: 'http://localhost:3000',
+        },
+      ],
+    },
+    apis: ['./index.js'], 
+  };
+
+  const swaggerDocs = swaggerJsdoc(swaggerOptions);
+
+  // Swagger Ende
+
+
+
 const PORT = process.env.PORT || 8000;
 
 /** Zentrales Objekt für unsere Express-Applikation */
@@ -17,6 +45,9 @@ async function initDB() {
 }
 
 // implement API routes
+
+// SWAGGER
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
 /** Return all todos. 
  *  Be aware that the db methods return promises, so we need to use either `await` or `then` here! 
