@@ -72,7 +72,7 @@ const todoValidationRules = [
 
 
 
-const PORT = process.env.PORT || 8000;
+const PORT = process.env.PORT || 3000;
 
 /** Zentrales Objekt für unsere Express-Applikation */
 const app = express();
