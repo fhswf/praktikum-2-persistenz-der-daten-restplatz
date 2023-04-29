@@ -1,5 +1,23 @@
 import express from 'express';
 import DB from './db.js'
+import passport from 'passport';
+import { Strategy as JwtStrategy, ExtractJwt } from 'passport-jwt';
+
+
+
+// Passport.js JWT-Strategie
+const opts = {
+    jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+    secretOrKey: `-----BEGIN PUBLIC KEY-----
+MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAyn2vP592Ju/iKXQW1DCrSTXyQXyo11Qed1SdzFWC+mRtdgioKibzYMBt2MfAJa6YoyrVNgOtGvK659MjHALtotPQGmis1VVvBeMFdfh+zyFJi8NPqgBTXz6bQfnu85dbxVAg95J+1Ud0m4IUXME1ElOyp1pi88+w0C6ErVcFCyEDS3uAajBY6vBIuPrlokbl6RDcvR9zX85s+R/s7JeP1XV/e8gbnYgZwxcn/6+7moHPDl4LqvVDKnDq9n4W6561s8zzw8EoAwwYXUC3ZPe2/3DcUCh+zTF2nOy8HiN808CzqLq1VeD13q9DgkAmBWFNSaXb6vK6RIQ9+zr2cwdXiwIDAQAB
+-----END PUBLIC KEY-----`,
+    ignoreExpiration: true,
+    issuer: "https://jupiter.fh-swf.de/keycloak/realms/webentwicklung"
+};
+
+
+
+
 
 // Validation
 import { check, validationResult } from 'express-validator';
@@ -81,6 +99,8 @@ app.use(express.json());
 /** global instance of our database */
 let db = new DB();
 
+app.use(passport.initialize());
+
 /** Initialize database connection */
 async function initDB() {
     await db.connect();
@@ -114,7 +134,13 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
  */
 
 
-
+passport.use(
+    new JwtStrategy(opts, (payload, done) =>  {
+        // Hier können Sie zusätzliche Validierungen oder Benutzerabfragen durchführen, falls erforderlich
+        console.log("JWT payload: %o", payload)
+        return done(null, payload);
+    })
+);
 
 
 app.get('/todos', async (req, res) => {
