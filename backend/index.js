@@ -77,6 +77,7 @@ const swaggerOptions = {
 
   // Swagger Ende
 
+  
 
 // Validation
 const todoValidationRules = [
@@ -142,11 +143,34 @@ passport.use(
     })
 );
 
+//neu 04052023
+let authenticate = (req, res, next) => passport.authenticate('jwt',
+    { session: false },
+    (err, user, info) => {
+        console.log("authenticate: %j %j %j", err, user, info)
+        if (!user) {
+            // für Prak 5
+            //let data = new Uint8Array(16);
+            //getRandomValues(data);
+            //let state = Buffer.from(data).toString('base64');
+            //state_dict[state] = Date.now()
+            //res.cookie("state", state, { maxAge: 900000, httpOnly: false })
+            res.sendStatus(401)
+            return
+        }
+        next()
+    })(req, res, next)
 
-app.get('/todos', async (req, res) => {
+
+
+
+
+app.get('/todos', 
+  [authenticate], async (req, res) =>  {
     let todos = await db.queryAll();
     res.send(todos);
 });
+
 
 
 // GET /todos/:id
@@ -167,9 +191,6 @@ app.post('/todos', todoValidationRules, async (req, res) => {
     if (!errors.isEmpty()) {
       return res.status(422).json({ errors: errors.array() });
     }
-
-
-
     const result = await db.insert(req.body);
     console.log(result);
     res.send(result);
